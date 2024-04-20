@@ -17,6 +17,10 @@ void listener(int port)
     std::string id = transaction.get_id();
     transactions[id] = std::move(transaction);
 
+    // Execute transaction in a separate thread
+    thread t([&transactions, id]() { transactions[id].exec(); });
+    t.detach();
+
     json j;
     j["transaction_id"] = id;
     res.set_content(to_string(j), "application/json"); });

@@ -47,17 +47,18 @@ void Transaction::exec()
 	{
 		// Execute step
 		cout << "Executing step: " << step.name << endl;
-		cout << "Step addr: " << step.execute.host << endl;
-		cout << "Step method: " << step.execute.method << endl;
-		cout << "Step data: " << step.execute.data << endl;
+		cout << "\tHost: " << step.execute.host << endl;
+		cout << "\tPath: " << step.execute.path << endl;
+		cout << "\tMethod: " << step.execute.method << endl;
+		cout << "\tData: " << step.execute.data << endl;
 
 		try
 		{
 			auto resp = request(step.execute);
 		}
-		catch (const std::exception &e)
+		catch (const httplib::Error &e)
 		{
-			cerr << "Error occured: " << e.what() << endl;
+			cerr << "Error occurred: " << e << endl;
 			current_step -= 1;
 			comp();
 			return;
@@ -78,17 +79,18 @@ void Transaction::comp()
 		auto &step = steps[i];
 		// Compensate step
 		cout << "Compensating step: " << step.name << endl;
-		cout << "Address: " << step.compensate.host << endl;
-		cout << "Method: " << step.compensate.method << endl;
-		cout << "Data: " << step.compensate.data << endl;
+		cout << "\tHost: " << step.compensate.host << endl;
+		cout << "\tPath: " << step.compensate.path << endl;
+		cout << "\tMethod: " << step.compensate.method << endl;
+		cout << "\tData: " << step.compensate.data << endl;
 
 		try
 		{
 			request(step.compensate);
 		}
-		catch (const std::exception &e)
+		catch (const httplib::Error &e)
 		{
-			std::cerr << "Error during compensation: " << e.what() << endl;
+			cerr << "Error occurred during compensation: " << e << endl;
 		}
 	}
 

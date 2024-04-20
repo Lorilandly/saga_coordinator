@@ -1,4 +1,3 @@
-#include <thread>
 #include <mutex>
 #include <iostream>
 #include <httplib.h>
